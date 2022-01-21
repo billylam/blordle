@@ -18,7 +18,7 @@ ol, ul {
 }
 
 .square {
-  background: #fff;
+  background: gray;
   border: 1px solid #999;
   float: left;
   font-size: 24px;
@@ -30,6 +30,14 @@ ol, ul {
   padding: 0;
   text-align: center;
   width: 34px;
+}
+
+.correct {
+  background: green
+}
+
+.almost {
+  background: yellow
 }
 
 .square:focus {
