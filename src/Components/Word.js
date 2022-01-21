@@ -11,8 +11,10 @@ function Square(props) {
 export default class Word extends Component {
   render() {
     const colors = this.props.colors?.split('')
-    console.log(colors)
-    const word = this.props.word?.split('').map((letter, i) => <Square letter={letter} color={colors[i]} />)
+    // if we have a current guess / length, right pad it with spaces
+    let paddedWord = this.props.word || ''
+    if (this.props.length) paddedWord = paddedWord.padEnd(5, ' ')
+    const word = paddedWord.split('').map((letter, i) => <Square letter={letter} color={colors && colors[i]} />)
     return (<div>{word}</div>)
   }
 }

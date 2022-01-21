@@ -9,7 +9,7 @@ export default class Game extends Component {
       currentGuess: '',
       isWinner: false,
       isLoser: false,
-      target: 'HELLO',
+      target: 'WORLD',
       guessedLetters: {},
     }
 
@@ -73,21 +73,22 @@ export default class Game extends Component {
         else colors[i] = 'R'
       }
     }
-    console.log(colors)
     //   Join string and pass to state
     this.setState({colors: this.state.colors.slice().concat([colors.join('')])})
   }
 
   render() {
     const words = this.state.guesses.map((guess, i) => <div><Word word={guess} colors={this.state.colors[i]} /></div>)
-    const numBlanks = 6 - this.state.guesses.length
-    const blanks = Array(numBlanks).fill(null).map(() => <div><Word word={Array(this.state.target.length).fill(' ').join('')} colors={Array(this.state.target.length).fill('R').join('')} /></div>)
+    const currentWord = <div><Word length={this.state.target.length} word={this.state.currentGuess} /></div>
+    const numBlanks = 6 - this.state.guesses.length - 1
+    const blanks = Array(numBlanks).fill(null).map(() => <div><Word word={Array(this.state.target.length).fill(' ').join('')} /></div>)
 
     return (<div>
       <div>{words}
+      {currentWord}
       {blanks}</div>
       <form onSubmit={this.handleSubmit}>
-        <input id="guess" maxLength='5' disabled={(this.state.isLoser || this.state.isWinner)} onChange={this.handleChange} value={this.state.currentGuess} />
+        <input id="guess" maxLength="5" autoComplete="off" disabled={(this.state.isLoser || this.state.isWinner)} onChange={this.handleChange} value={this.state.currentGuess} />
       </form>
       {this.state.isWinner && <span>Nice job!</span>}
       {this.state.isLoser && <span>Bad job!</span>}
