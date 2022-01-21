@@ -80,12 +80,12 @@ export default class Game extends Component {
   render() {
     const words = this.state.guesses.map((guess, i) => <div><Word word={guess} colors={this.state.colors[i]} /></div>)
     const currentWord = <div><Word length={this.state.target.length} word={this.state.currentGuess} /></div>
-    const numBlanks = 6 - this.state.guesses.length - 1
+    const numBlanks = Math.max(6 - this.state.guesses.length - 1, 0)
     const blanks = Array(numBlanks).fill(null).map(() => <div><Word word={Array(this.state.target.length).fill(' ').join('')} /></div>)
 
     return (<div>
       <div>{words}
-      {currentWord}
+      {!this.state.isLoser && currentWord}
       {blanks}</div>
       <form onSubmit={this.handleSubmit}>
         <input id="guess" maxLength="5" autoComplete="off" disabled={(this.state.isLoser || this.state.isWinner)} onChange={this.handleChange} value={this.state.currentGuess} />

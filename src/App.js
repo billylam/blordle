@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Game from './Components/Game'
 
@@ -11,7 +10,5 @@ function App() {
     </div>
   );
 }
-
-
 
 export default App;

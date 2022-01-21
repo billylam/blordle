@@ -1,8 +1,8 @@
 {
-  "name": "wordle",
+  "name": "blordle",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://billylam.github.io/wordle",
+  "homepage": "https://billylam.github.io/blordle",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
