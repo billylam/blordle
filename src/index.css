@@ -3,33 +3,31 @@ body {
   margin: 20px;
 }
 
-ol, ul {
-  padding-left: 30px;
+.game {
+  display: inline-block;
 }
 
-.board-row:after {
-  clear: both;
-  content: "";
-  display: table;
+.words {
+  display: inline-block;
 }
 
-.status {
-  margin-bottom: 10px;
+.word {
+  display: flex;
 }
 
 .square {
   background: gray;
   border: 1px solid #999;
-  float: left;
+  display: inline-block;
   font-size: 24px;
   font-weight: bold;
   color: black;
   line-height: 34px;
-  height: 34px;
   margin-right: 5px;
   margin-top: 5px;
   padding: 0;
   text-align: center;
+  height: 34px;
   width: 34px;
 }
 
@@ -41,19 +39,10 @@ ol, ul {
   background: yellow
 }
 
-.square:focus {
+/* .square:focus {
   outline: none;
-}
+} */
 
 .kbd-navigation .square:focus {
   background: #ddd;
-}
-
-.game {
-  display: flex;
-  flex-direction: row;
-}
-
-.game-info {
-  margin-left: 20px;
 }

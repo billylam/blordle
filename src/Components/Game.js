@@ -13,6 +13,7 @@ export default class Game extends Component {
       currentGuess: '',
       isWinner: false,
       isLoser: false,
+      isActive: true,
       target: target,
       guessedLetters: {},
     }
@@ -38,13 +39,13 @@ export default class Game extends Component {
     this.setState({guesses: guesses.concat([this.state.currentGuess]), currentGuess: ''})
     this.colorize()
     if (this.state.currentGuess === this.state.target){
-      this.setState({isWinner: true})
+      this.setState({isWinner: true, isActive: false})
     }
     else if (this.state.guesses.length + 1 === 6){
-      this.setState({isLoser: true})
+      this.setState({isLoser: true, isActive: false})
     }
   }
-
+  
   colorize() {
     // Rules: 
     //   First hash count of each letter in target
@@ -83,21 +84,23 @@ export default class Game extends Component {
 
   render() {
     const words = this.state.guesses.map((guess, i) => <div><Word word={guess} colors={this.state.colors[i]} /></div>)
-    const currentWord = !(this.state.isLoser || this.state.isWinner) && <div><Word length={this.state.target.length} word={this.state.currentGuess} /></div>
-    const numBlanks = Math.max(6 - this.state.guesses.length - 1, 0)
+    const currentWord = this.state.isActive && <div><Word length={this.state.target.length} word={this.state.currentGuess} /></div>
+    let numBlanks = 6 - this.state.guesses.length;
+    if (this.state.isActive) numBlanks--;
     const blanks = Array(numBlanks).fill(null).map(() => <div><Word word={Array(this.state.target.length).fill(' ').join('')} /></div>)
 
-    return (<div>
-      <div>
+    return (<div className="game">
+      <div className="words">
         {words}
         {currentWord}
         {blanks}
       </div>
       <form onSubmit={this.handleSubmit}>
-        <input id="guess" maxLength="5" autoComplete="off" disabled={(this.state.isLoser || this.state.isWinner)} onChange={this.handleChange} value={this.state.currentGuess} />
+        <input id="guess" maxLength="5" autoComplete="off" disabled={!this.state.isActive} onChange={this.handleChange} value={this.state.currentGuess} />
       </form>
-      {this.state.isWinner && <div>Good job!</div>}
-      {this.state.isLoser && <div>Bad job!</div>}
+      {this.state.isWinner && <div>Welcome to Costco, I love you</div>}
+      {this.state.isLoser && <div>Whoomp, there it is not {this.state.target}</div>}
+      
     </div>)
   }
 }

@@ -15,6 +15,6 @@ export default class Word extends Component {
     let paddedWord = this.props.word || ''
     if (this.props.length) paddedWord = paddedWord.padEnd(5, ' ')
     const word = paddedWord.split('').map((letter, i) => <Square letter={letter} color={colors && colors[i]} />)
-    return (<div>{word}</div>)
+    return (<div className="word">{word}</div>)
   }
 }
