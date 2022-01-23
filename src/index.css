@@ -5,10 +5,12 @@ body {
 
 .game {
   display: inline-block;
+  width: 850px;
 }
 
 .words {
   display: inline-block;
+  margin-bottom: 30px;
 }
 
 .word {
@@ -32,11 +34,16 @@ body {
 }
 
 .correct {
-  background: green
+  background: green !important
 }
 
 .almost {
-  background: yellow
+  background: yellow !important
+}
+
+.nope {
+  background: black !important;
+  color: white !important;
 }
 
 /* .square:focus {
@@ -48,7 +55,6 @@ body {
 }
 
 .hg-theme-default .hg-button {
-  flex-grow: initial !important;
   /* display:inline-block !important; */
 }
 

@@ -19,16 +19,9 @@ export default class Game extends Component {
       guessedLetters: {},
     }
 
-    // this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.colorize = this.colorize.bind(this)
   }
-  
-  // handleChange(e) {
-  //   if ((/^[a-zA-Z]*$/.test(e.target.value))) {
-  //     this.setState({currentGuess: e.target.value.toUpperCase()})
-  //   }
-  // }
 
   handleSubmit() {
     if (this.state.currentGuess.length !== 5) {
@@ -63,9 +56,12 @@ export default class Game extends Component {
     //   Iterate through each guess's letters twice
     //   Handle exact matches first and color green, decrement if found
     const colors = Array(this.state.target.length).fill('')
+    const letters = {}
     for (let i = 0; i < this.state.currentGuess.length; i++) {
       if (this.state.currentGuess[i] === this.state.target[i]) {
         colors[i] = 'G'
+        letters[this.state.currentGuess[i]] = 'G'
+
         counts[this.state.currentGuess[i]] = counts[this.state.currentGuess[i]] - 1
       }
     }
@@ -74,13 +70,20 @@ export default class Game extends Component {
       if (this.state.currentGuess[i] !== this.state.target[i]) {
         if (counts[this.state.currentGuess[i]] > 0) {
           colors[i] = 'Y'
+          if (letters[this.state.currentGuess[i]] !== 'G') letters[this.state.currentGuess[i]] = 'Y'
           counts[this.state.currentGuess[i]] = counts[this.state.currentGuess[i]] - 1
         }
-        else colors[i] = 'R'
+        else {
+          colors[i] = 'R'
+          if (letters[this.state.currentGuess[i]] !== 'G' && letters[this.state.currentGuess[i]] !== 'Y') letters[this.state.currentGuess[i]] = 'R'
+        }
       }
     }
     //   Join string and pass to state
-    this.setState({colors: this.state.colors.slice().concat([colors.join('')])})
+    this.setState(prevState => ({
+      colors: this.state.colors.slice().concat([colors.join('')]),
+      guessedLetters: {...prevState.guessedLetters, ...letters}
+    }))
   }
 
   onKeyPress = (button) => {
@@ -88,12 +91,12 @@ export default class Game extends Component {
       this.handleSubmit();
       return;
     }
-    if (button === '{bksp}' && this.state.currentGuess.length !== 0) {
-      this.setState({currentGuess: this.state.currentGuess.slice(0, -1)})
+    else if (button === '{bksp}') {
+      if (this.state.currentGuess.length !== 0)
+        this.setState({currentGuess: this.state.currentGuess.slice(0, -1)})
       return;
     } 
-    if (this.state.currentGuess.length < 5) this.setState({currentGuess: this.state.currentGuess + button})
-    // this.setState({currentGuess: e.target.value.toUpperCase()})
+    else if (this.state.currentGuess.length < 5) this.setState({currentGuess: this.state.currentGuess + button})
   }
 
   render() {
@@ -101,7 +104,6 @@ export default class Game extends Component {
     const currentWord = this.state.isActive && <div><Word length={this.state.target.length} word={this.state.currentGuess} /></div>
     let numBlanks = 6 - this.state.guesses.length;
     if (this.state.isActive) numBlanks--
-    console.log(numBlanks)
     const blanks = Array(numBlanks).fill(null).map(() => <div><Word word={Array(this.state.target.length).fill(' ').join('')} /></div>)
 
     return (<div className="game">
@@ -110,13 +112,10 @@ export default class Game extends Component {
         {currentWord}
         {blanks}
       </div>
-      {/* <form onSubmit={this.handleSubmit}>
-        <input id="guess" maxLength="5" autoComplete="off" disabled={!this.state.isActive} onChange={this.handleChange} value={this.state.currentGuess} />
-      </form> */}
       {this.state.isWinner && <div>Welcome to Costco, I love you</div>}
       {this.state.isLoser && <div>Whoomp, there it is not {this.state.target}</div>}
       {this.state.isActive && <div>
-        <KB onKeyPress={this.onKeyPress} />
+        <KB letters={this.state.guessedLetters} onKeyPress={this.onKeyPress} />
       </div>}
     </div>)
   }
