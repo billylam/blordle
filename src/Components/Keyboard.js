@@ -22,7 +22,7 @@ export default class KB extends Component {
       }}
       display={{
           '{bksp}': '⌫',
-          '{enter}': '↩',
+          '{enter}': '⏎',
       }}
       buttonTheme={[{
         class: "correct",

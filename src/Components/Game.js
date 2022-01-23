@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import Word from './Word'
-import data from '../data'
+import targets from '../Data/targets'
 import KB from './Keyboard'
+import dictionary from '../Data/dictionary';
 export default class Game extends Component {
   constructor(props) {
     super(props)
 
-    const target = data[Math.floor(Math.random() * data.length)].toUpperCase()
+    const target = targets[Math.floor(Math.random() * targets.length)]
 
     this.state = {
       guesses: [],
@@ -24,7 +25,7 @@ export default class Game extends Component {
   }
 
   handleSubmit() {
-    if (this.state.currentGuess.length !== 5) {
+    if (this.state.currentGuess.length !== 5 || !dictionary.includes(this.state.currentGuess)) {
       return;
     }
 

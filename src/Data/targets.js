@@ -1,4 +1,4 @@
-const data = `Apply
+const targets = `Apply
 Awful
 Above
 Apple
@@ -470,6 +470,6 @@ Waste
 Youth
 Yield
 Young
-Yours`.split('\n')
+Yours`.split('\n').map((word) => word.toUpperCase())
 
-export default data;
+export default targets;
