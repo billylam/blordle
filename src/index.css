@@ -46,3 +46,12 @@ body {
 .kbd-navigation .square:focus {
   background: #ddd;
 }
+
+.hg-theme-default .hg-button {
+  flex-grow: initial !important;
+  /* display:inline-block !important; */
+}
+
+.hg-row {
+  justify-content: center;
+}
