@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Keyboard from "react-simple-keyboard";
 import "react-simple-keyboard/build/css/index.css";
+import "../Style/Keyboard.css"
 
 const KB = (props) => {
-    const [perfectLetters, setPerfectLetters] = useState(Object.entries(props.letters).filter(entry => entry[1] === 'G').map(entry => entry[0]).join(' '))
-    const [badLetters, setBadLetters] = useState(Object.entries(props.letters).filter(entry => entry[1] === 'R').map(entry => entry[0]).join(' '))
-    const [goodLetters, setGoodLetters] = useState(Object.entries(props.letters).filter(entry => entry[1] === 'Y').map(entry => entry[0]).join(' '))
+    const perfectLetters = Object.entries(props.letters).filter(entry => entry[1] === 'G').map(entry => entry[0]).join(' ');
+    const badLetters = Object.entries(props.letters).filter(entry => entry[1] === 'R').map(entry => entry[0]).join(' ')
+    const goodLetters = Object.entries(props.letters).filter(entry => entry[1] === 'Y').map(entry => entry[0]).join(' ')
 
     return (
     <Keyboard
@@ -23,7 +24,7 @@ const KB = (props) => {
       }}
       buttonTheme={[{
         class: "correct",
-        buttons: perfectLetters || ' ',
+        buttons: perfectLetters,
       },
       {
         class: "almost",

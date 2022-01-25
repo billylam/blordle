@@ -3,6 +3,9 @@ import Word from './Word'
 import targets from '../Data/targets'
 import KB from './Keyboard'
 import dictionary from '../Data/dictionary';
+import "../Style/Game.css"
+import "../Style/Keyboard.css"
+import { Buffer } from 'buffer';
 
 const Game = () => {
   const [guesses, setGuesses] = useState([])
@@ -11,7 +14,18 @@ const Game = () => {
   const [isWinner, setIsWinner] = useState(false)
   const [isLoser, setIsLoser] = useState(false)
   const [isActive, setIsActive] = useState(true)
-  const [target, setTarget] = useState(targets[Math.floor(Math.random() * targets.length)])
+  const [target, setTarget] = useState(() => {
+    let search = window.location.search;
+    let params = new URLSearchParams(search);
+    const q = params.get('q');
+    if (q && Buffer.from(params.get('q'), 'base64').toString('ascii')) {
+      const paramTarget = Buffer.from(params.get('q'), 'base64').toString('ascii');
+      if (paramTarget.length === 5 && dictionary.includes(paramTarget.toUpperCase()))
+        return Buffer.from(params.get('q'), 'base64').toString('ascii').toUpperCase();
+    }
+    
+    return targets[Math.floor(Math.random() * targets.length)]
+  })
   const [guessedLetters, setGuessedLetters] = useState({})
 
   const handleSubmit = (props) => {
@@ -103,8 +117,10 @@ const Game = () => {
       {currentWord}
       {blanks}
     </div>
-    {isWinner && <div>Welcome to Costco, I love you</div>}
-    {isLoser && <div>Whoomp, there it is not {target}</div>}
+    <div className="messaging">
+      {isWinner && <div>Welcome to Costco, I love you</div>}
+      {isLoser && <div>Whoomp, there it is not: {target}</div>}
+    </div>
     {isActive && <div>
       <KB letters={guessedLetters} onKeyPress={onKeyPress} />
     </div>}
