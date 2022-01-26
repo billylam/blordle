@@ -28,7 +28,7 @@ const Modal = (props) => {
       </header>
       <div>
         <form onSubmit={handleSubmit} >
-          <input className="modal-input" type="text" placeholder="Enter a real 5 letter word" value={value} onSubmit={handleSubmit} onChange={handleChange}></input>
+          <input maxLength={5} className="modal-input" type="text" placeholder="Enter a real 5 letter word" value={value} onSubmit={handleSubmit} onChange={handleChange}></input>
           <button type="submit">Go!</button>
         </form>
       </div>

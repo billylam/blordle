@@ -8,7 +8,7 @@ import "../Style/Keyboard.css"
 import { Buffer } from 'buffer';
 import Share from './Share'
 
-const Game = () => {
+const Game = (props) => {
   const getTarget = () => {
     let search = window.location.search;
     let params = new URLSearchParams(search);
@@ -110,7 +110,10 @@ const Game = () => {
   }
 
   const onKeyPress = (button) => {
-    if (button === '{enter}') {
+    if (props.isDisplayingModal) {
+      return;
+    }
+    if (button.toString() === '{enter}') {
       handleSubmit();
       return;
     }
@@ -119,7 +122,7 @@ const Game = () => {
         setCurrentGuess(currentGuess.slice(0, -1))
       return;
     } 
-    else if (currentGuess.length < 5) setCurrentGuess(currentGuess + button)
+    else if (currentGuess.length < 5) setCurrentGuess(currentGuess.concat(button))
   }
 
   const words = guesses.map((guess, i) => <div><Word word={guess} colors={colors[i]} /></div>)
