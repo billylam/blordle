@@ -6,14 +6,15 @@ import dictionary from '../Data/dictionary';
 import "../Style/Game.css"
 import "../Style/Keyboard.css"
 import { Buffer } from 'buffer';
-import Modal from './Modal'
+import Share from './Share'
 
 const Game = () => {
   const getTarget = () => {
     let search = window.location.search;
     let params = new URLSearchParams(search);
     const q = params.get('q');
-    if (q && Buffer.from(params.get('q'), 'base64').toString('ascii') && guesses.length === 0 /* Prevents reusing query string on new game button */) {
+    if (q && Buffer.from(params.get('q'), 'base64').toString('ascii') 
+          && guesses.length === 0 /* Prevents reusing query string when tapping reload button */) {
       const paramTarget = Buffer.from(params.get('q'), 'base64').toString('ascii');
       if (paramTarget.length === 5 && dictionary.includes(paramTarget.toUpperCase()))
         return Buffer.from(params.get('q'), 'base64').toString('ascii').toUpperCase();
@@ -63,7 +64,7 @@ const Game = () => {
     setCurrentGuess('')
   }
   
-   const colorize = () => {
+  const colorize = () => {
     // Rules: 
     //   First hash count of each letter in target
     const counts = {};
@@ -127,6 +128,9 @@ const Game = () => {
   if (isActive) numBlanks--
   const blanks = Array(numBlanks).fill(null).map(() => <div><Word word={Array(target.length).fill(' ').join('')} /></div>)
 
+  const praises = ["Nice job!", "Awe-inspiring!", "Excellent!", "Winner!", "Yeah boyeee!", "Welcome to Costco, I love you"];
+  const slams = ["Bad job!  It was ", "Whoomp there it ISN'T: ", "Aww so close: ", "Better luck next time: "]
+
   return (<div className="game">
     <div className="words">
       {words}
@@ -134,9 +138,13 @@ const Game = () => {
       {blanks}
     </div>
     <div className="messaging">
-      {isWinner && <div>Welcome to Costco, I love you</div>}
-      {isLoser && <div>Whoomp, there it is not: {target}</div>}
+      {isWinner && <div>{praises[Math.floor(Math.random() * praises.length)]}</div>}
+      {isLoser && <div>{slams[Math.floor(Math.random() * slams.length)]} {target}</div>}
+
+    </div>
+    <div className="finished-buttons">
       {!isActive && <div className="reload" onClick={reload}>↻</div>}
+      {!isActive && <Share guesses={guesses} colors={colors} target={target} />}
     </div>
     {isActive && <div>
       <KB letters={guessedLetters} onKeyPress={onKeyPress} />

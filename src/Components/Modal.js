@@ -23,7 +23,7 @@ const Modal = (props) => {
     <div className="modal-content">
       <header className="modal-header">
         <div> </div>
-        <div className="modal-title">Create a custom Blordle!™</div>
+        <div className="modal-title">Create a custom Blordle!</div>
         <div className="modal-close" onClick={props.handleModalClose}>ⓧ</div>
       </header>
       <div>
