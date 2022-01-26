@@ -10,16 +10,3 @@
   bottom: 1rem;
   max-width: 500px;
 }
-
-.correct {
-  background: green !important
-}
-
-.almost {
-  background: yellow !important
-}
-
-.nope {
-  background: black !important;
-  color: white !important;
-}

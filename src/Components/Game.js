@@ -33,6 +33,7 @@ const Game = (props) => {
     return getTarget();
   })
   const [guessedLetters, setGuessedLetters] = useState({})
+  const [currentWordStyle, setCurrentWordStyle] = useState('valid')
 
   const reload = () => {
     setTarget(getTarget())
@@ -47,6 +48,11 @@ const Game = (props) => {
 
   const handleSubmit = (props) => {
     if (currentGuess.length !== 5 || !dictionary.includes(currentGuess)) {
+      setCurrentWordStyle('invalid')
+      console.log('here')
+      setTimeout(() => {
+        setCurrentWordStyle('valid')
+      }, 500)
       return;
     }
 
@@ -126,7 +132,7 @@ const Game = (props) => {
   }
 
   const words = guesses.map((guess, i) => <div><Word word={guess} colors={colors[i]} /></div>)
-  const currentWord = isActive && <div><Word length={target.length} word={currentGuess} /></div>
+  const currentWord = isActive && <div><Word wordStyle={currentWordStyle} length={target.length} word={currentGuess} /></div>
   let numBlanks = 6 - guesses.length;
   if (isActive) numBlanks--
   const blanks = Array(numBlanks).fill(null).map(() => <div><Word word={Array(target.length).fill(' ').join('')} /></div>)
@@ -147,7 +153,7 @@ const Game = (props) => {
     </div>
     <div className="finished-buttons">
       {!isActive && <div className="reload" onClick={reload}>↻</div>}
-      {!isActive && <Share guesses={guesses} colors={colors} target={target} />}
+      {!isActive && <Share isWinner={isWinner} guesses={guesses} colors={colors} target={target} />}
     </div>
     {isActive && <div>
       <KB letters={guessedLetters} onKeyPress={onKeyPress} />

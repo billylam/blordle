@@ -26,7 +26,9 @@
   display: inline-block;
   font-size: 2rem;
   font-weight: bold;
-  color: black;
+  -webkit-text-stroke-width: .5px;
+  -webkit-text-stroke-color: black;
+  color: white;
   line-height: 6vh;
   margin-right: 5px;
   margin-top: 5px;
@@ -53,4 +55,22 @@
 .finished-buttons div {
   margin: 2vh;
   align-content: center;
+}
+
+.invalid {
+  background-color: red;
+  color:white;
+}
+
+.correct {
+  background: rgb(63, 143, 63) !important
+}
+
+.almost {
+  background: rgb(215, 215, 112) !important
+}
+
+.nope {
+  background: rgb(46, 39, 39) !important;
+  color: white !important;
 }
