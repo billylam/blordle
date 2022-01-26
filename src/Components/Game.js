@@ -9,6 +9,19 @@ import { Buffer } from 'buffer';
 import Modal from './Modal'
 
 const Game = () => {
+  const getTarget = () => {
+    let search = window.location.search;
+    let params = new URLSearchParams(search);
+    const q = params.get('q');
+    if (q && Buffer.from(params.get('q'), 'base64').toString('ascii') && guesses.length === 0 /* Prevents reusing query string on new game button */) {
+      const paramTarget = Buffer.from(params.get('q'), 'base64').toString('ascii');
+      if (paramTarget.length === 5 && dictionary.includes(paramTarget.toUpperCase()))
+        return Buffer.from(params.get('q'), 'base64').toString('ascii').toUpperCase();
+    }
+    
+    return targets[Math.floor(Math.random() * targets.length)]
+  }
+
   const [guesses, setGuesses] = useState([])
   const [colors, setColors] = useState([])
   const [currentGuess, setCurrentGuess] = useState('')
@@ -16,18 +29,20 @@ const Game = () => {
   const [isLoser, setIsLoser] = useState(false)
   const [isActive, setIsActive] = useState(true)
   const [target, setTarget] = useState(() => {
-    let search = window.location.search;
-    let params = new URLSearchParams(search);
-    const q = params.get('q');
-    if (q && Buffer.from(params.get('q'), 'base64').toString('ascii')) {
-      const paramTarget = Buffer.from(params.get('q'), 'base64').toString('ascii');
-      if (paramTarget.length === 5 && dictionary.includes(paramTarget.toUpperCase()))
-        return Buffer.from(params.get('q'), 'base64').toString('ascii').toUpperCase();
-    }
-    
-    return targets[Math.floor(Math.random() * targets.length)]
+    return getTarget();
   })
   const [guessedLetters, setGuessedLetters] = useState({})
+
+  const reload = () => {
+    setTarget(getTarget())
+    setGuesses([])
+    setColors([])
+    setCurrentGuess('')
+    setIsWinner(false)
+    setIsLoser(false)
+    setIsActive(true)
+    setGuessedLetters({})
+  }
 
   const handleSubmit = (props) => {
     if (currentGuess.length !== 5 || !dictionary.includes(currentGuess)) {
@@ -121,6 +136,7 @@ const Game = () => {
     <div className="messaging">
       {isWinner && <div>Welcome to Costco, I love you</div>}
       {isLoser && <div>Whoomp, there it is not: {target}</div>}
+      {!isActive && <div className="reload" onClick={reload}>↻</div>}
     </div>
     {isActive && <div>
       <KB letters={guessedLetters} onKeyPress={onKeyPress} />

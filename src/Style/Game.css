@@ -5,9 +5,9 @@
 .game {
   background-color: #282c34;
   min-height: 100vh;
-  display: flex;
-  align-items: flex-start + 2vh;
-  justify-content: center;
+  /* display: flex; */
+  /* align-items: flex-start + 2vh; */
+  /* justify-content: center; */
   font-size: calc(10px + 2vmin);
 }
 
@@ -34,4 +34,12 @@
   text-align: center;
   height: 6vh;
   width: 6vh;
+}
+
+.messaging {
+  display: block;
+}
+
+.reload {
+  font-size: 6vh;
 }
