@@ -26,9 +26,8 @@
   display: inline-block;
   font-size: 2rem;
   font-weight: bold;
-  -webkit-text-stroke-width: .5px;
-  -webkit-text-stroke-color: black;
-  color: white;
+  color: rgb(233, 231, 231);
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
   line-height: 6vh;
   margin-right: 5px;
   margin-top: 5px;
@@ -58,7 +57,7 @@
 }
 
 .invalid {
-  background-color: red;
+  background-color: rgb(155, 14, 14);
   color:white;
 }
 
@@ -72,5 +71,6 @@
 
 .nope {
   background: rgb(46, 39, 39) !important;
-  color: white !important;
+  color: rgb(233, 231, 231);
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
