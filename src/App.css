@@ -1,12 +1,44 @@
 .App {
   text-align: center;
+  background-color: #282c34;
+  max-width: 500px;
+}
+
+#root {
+  background-color: #282c34;
 }
 
 .App-header {
+  font-size: calc(8vmin);
+  color: white;
   background-color: #282c34;
-  min-height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  padding: 3vh;
+}
+
+.left {
+  visibility: hidden;
+  font-weight: bold;
+  color: green;
+  padding-left: 3vh;
+  /* justify-content: space-between; */
+}
+
+.title {
+  width: 80%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  /* padding: 3vh; */
+  /* padding-bottom: 7vh; */
+  /* justify-content: space-between; */
+}
+
+.create {
+  display: flex;
+  font-weight: bold;
+  align-items: center;
+  padding-right: 3vh;
+  /* justify-content: space-between; */
 }

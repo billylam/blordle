@@ -1,0 +1,37 @@
+.messaging {
+  color:white;
+}
+
+.game {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start + 2vh;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+}
+
+.words {
+  display: inline-block;
+  padding-bottom: 30px;
+}
+
+.word {
+  display: flex;
+}
+
+.square {
+  background: gray;
+  border: 1px solid #999;
+  display: inline-block;
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+  line-height: 6vh;
+  margin-right: 5px;
+  margin-top: 5px;
+  padding: 0;
+  text-align: center;
+  height: 6vh;
+  width: 6vh;
+}

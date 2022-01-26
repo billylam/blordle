@@ -24,7 +24,7 @@ const KB = (props) => {
       }}
       buttonTheme={[{
         class: "correct",
-        buttons: perfectLetters,
+        buttons: perfectLetters || ' ',
       },
       {
         class: "almost",

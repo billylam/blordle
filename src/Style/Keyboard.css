@@ -1,0 +1,25 @@
+.hg-row {
+  justify-content: center;
+}
+
+.simple-keyboard {
+  /* justify-content: center; */
+  justify-content: center;
+  position: fixed;
+  left: 0;
+  bottom: 5vh;
+  max-width: 500px;
+}
+
+.correct {
+  background: green !important
+}
+
+.almost {
+  background: yellow !important
+}
+
+.nope {
+  background: black !important;
+  color: white !important;
+}

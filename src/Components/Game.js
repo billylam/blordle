@@ -6,6 +6,7 @@ import dictionary from '../Data/dictionary';
 import "../Style/Game.css"
 import "../Style/Keyboard.css"
 import { Buffer } from 'buffer';
+import Modal from './Modal'
 
 const Game = () => {
   const [guesses, setGuesses] = useState([])
