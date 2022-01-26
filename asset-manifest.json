@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/blordle/static/css/main.9746790a.css",
+    "main.css": "/blordle/static/css/main.2cd3a507.css",
     "main.js": "/blordle/static/js/main.e1421fb9.js",
     "index.html": "/blordle/index.html",
-    "main.9746790a.css.map": "/blordle/static/css/main.9746790a.css.map",
+    "main.2cd3a507.css.map": "/blordle/static/css/main.2cd3a507.css.map",
     "main.e1421fb9.js.map": "/blordle/static/js/main.e1421fb9.js.map"
   },
   "entrypoints": [
-    "static/css/main.9746790a.css",
+    "static/css/main.2cd3a507.css",
     "static/js/main.e1421fb9.js"
   ]
 }
