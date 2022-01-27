@@ -8,11 +8,13 @@ const Modal = (props) => {
   const [output, setOutput] = useState('');
   const [isCopyable, setIsCopyable] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
+  const [copyHasErrored, setCopyHasErrored] = useState(false)
   const handleChange = (e) => {
     setValue(e.target.value)
     setOutput('')
     setIsCopyable(false);
     setIsCopied(false);
+    setCopyHasErrored(false)
   }
 
   const handleSubmit = (e) => {
@@ -25,8 +27,13 @@ const Modal = (props) => {
   }
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(output)
-    setIsCopied(true)
+    try {
+      navigator.clipboard.writeText(output)
+      setIsCopied(true)
+    } catch (e) {
+      setCopyHasErrored(true)
+      setIsCopied(false)
+    }
   }
 
   return (<div className="modal">
@@ -48,6 +55,7 @@ const Modal = (props) => {
           <div> {output} </div>
         </div>}
         {isCopied && <div>Copied to clipboard!</div>}
+        {copyHasErrored && <div>Not able to copy to clipboard. Try in a real browser.</div>}
     </div>
   </div>)
 }
