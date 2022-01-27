@@ -3,16 +3,16 @@ import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
 import '../Style/Keyboard.css';
 
-function KB(props) {
-  const perfectLetters = Object.entries(props.letters).filter((entry) => entry[1] === 'G').map((entry) => entry[0]).join(' ');
-  const badLetters = Object.entries(props.letters).filter((entry) => entry[1] === 'R').map((entry) => entry[0]).join(' ');
-  const goodLetters = Object.entries(props.letters).filter((entry) => entry[1] === 'Y').map((entry) => entry[0]).join(' ');
+function KB({ letters, onKeyPress }) {
+  const perfectLetters = Object.entries(letters).filter((entry) => entry[1] === 'G').map((entry) => entry[0]).join(' ');
+  const badLetters = Object.entries(letters).filter((entry) => entry[1] === 'R').map((entry) => entry[0]).join(' ');
+  const goodLetters = Object.entries(letters).filter((entry) => entry[1] === 'Y').map((entry) => entry[0]).join(' ');
 
   const keyHandler = ({ key }) => {
     // Standardize with 3rd party keyboard
-    if (key === 'Enter') props.onKeyPress('{enter}');
-    else if (key === 'Backspace') props.onKeyPress('{bksp}');
-    else if (/^[A-Z]$/.test(key.toUpperCase())) props.onKeyPress(key.toUpperCase());
+    if (key === 'Enter') onKeyPress('{enter}');
+    else if (key === 'Backspace') onKeyPress('{bksp}');
+    else if (/^[A-Z]$/.test(key.toUpperCase())) onKeyPress(key.toUpperCase());
   };
 
   useEffect(() => {
@@ -25,7 +25,7 @@ function KB(props) {
 
   return (
     <Keyboard
-      onKeyPress={props.onKeyPress}
+      onKeyPress={onKeyPress}
       layout={{
         default: [
           'Q W E R T Y U I O P',

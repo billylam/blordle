@@ -470,6 +470,6 @@ Waste
 Youth
 Yield
 Young
-Yours`.split('\n').map((word) => word.toUpperCase())
+Yours`.split('\n').map((word) => word.toUpperCase());
 
 export default targets;

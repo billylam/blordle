@@ -18,5 +18,12 @@ module.exports = {
     'react',
   ],
   rules: {
+    'no-plusplus': [
+      2,
+      {
+        allowForLoopAfterthoughts: true,
+      },
+    ],
+    'react/prop-types': [1],
   },
 };

@@ -12475,6 +12475,6 @@ ZUZIM
 ZYGAL
 ZYGON
 ZYMES
-ZYMIC`.split('\n')
+ZYMIC`.split('\n');
 
 export default Dictionary;

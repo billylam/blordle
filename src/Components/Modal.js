@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../Style/Modal.css';
 import { Buffer } from 'buffer';
 import Dictionary from '../Data/dictionary';
 
-function Modal(props) {
+function Modal({ handleModalClose }) {
   const [value, setValue] = useState('');
   const [output, setOutput] = useState('');
   const [isCopyable, setIsCopyable] = useState(false);
@@ -34,7 +34,7 @@ function Modal(props) {
         <header className="modal-header">
           <div> </div>
           <div className="modal-title">Create a custom Blordle!</div>
-          <div className="modal-close" onClick={props.handleModalClose}>ⓧ</div>
+          <div className="modal-close" onClick={handleModalClose}>ⓧ</div>
         </header>
         <div>
           <form onSubmit={handleSubmit}>
