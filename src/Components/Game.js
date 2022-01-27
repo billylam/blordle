@@ -23,6 +23,8 @@ const Game = (props) => {
     return targets[Math.floor(Math.random() * targets.length)]
   }
 
+  console.log(navigator.userAgent)
+
   const [guesses, setGuesses] = useState([])
   const [colors, setColors] = useState([])
   const [currentGuess, setCurrentGuess] = useState('')
@@ -157,9 +159,10 @@ const Game = (props) => {
     </div>
     <div className="finished-buttons">
       {!isActive && <div className="reload" onClick={reload}>↻</div>}
-      {!isActive && <Share setIsCopied={() => setIsCopied(true)} isWinner={isWinner} guesses={guesses} colors={colors} target={target} />}
+      {(!props.isAndroidWebview && !isActive) && <Share setIsCopied={() => setIsCopied(true)} isWinner={isWinner} guesses={guesses} colors={colors} target={target} />}
     </div>
     {isCopied && <div>Copied to clipboard!</div>}
+    {(props.isAndroidWebview && !isActive) && <div>Use a different browser to enable sharing and puzzle creation!</div>}
     {isActive && <div>
       <KB letters={guessedLetters} onKeyPress={onKeyPress} />
     </div>}

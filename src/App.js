@@ -8,15 +8,19 @@ function App() {
   const handleModalClose = () => {
     setIsDisplayingModal(false)
   }
+  const [isAndroidWebview] = useState(() => {
+    const ua = navigator.userAgent
+    return ua.includes('Android') && (ua.includes('wv') || ua.includes('Version/'));
+  })
   return (
     <div className="App">
       <header className="App-header">
-        <div className="left">+</div>
+        {isAndroidWebview ? <div></div> : <div className="left">+</div>}
         <div className="title">BLORDLE!</div>
-        <div onClick={() => setIsDisplayingModal(true)} className="create">⨁</div>
+        {isAndroidWebview ? <div></div> : <div onClick={() => setIsDisplayingModal(true)} className="create">⨁</div>}
       </header>
       {isDisplayingModal && <Modal handleModalClose={handleModalClose} />}
-      <Game isDisplayingModal={isDisplayingModal}></Game>
+      <Game isAndroidWebview={isAndroidWebview} isDisplayingModal={isDisplayingModal}></Game>
     </div>
   );
 }
