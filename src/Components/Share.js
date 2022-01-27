@@ -17,14 +17,8 @@ const Share = (props) => {
       return letters;
     }).join('\n'))
     text = text.concat(`\nPlay this Blordle at\n${`https://billylam.github.io/blordle/?q=${Buffer.from(props.target).toString('base64')}`}`)
-    try {
-      navigator.clipboard.writeText(text);
-      props.setCopyMessage('Copied to clipboard!');
-    }
-    catch (e) {
-      // No way to copy on an Android webview
-      props.setCopyMessage('Copy failed!  Try on a real browser.');
-    }
+    navigator.clipboard.writeText(text);
+    props.setIsCopied();
   }
   return (<div onClick={share}>⇧</div>)
 }

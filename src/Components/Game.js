@@ -34,7 +34,7 @@ const Game = (props) => {
   })
   const [guessedLetters, setGuessedLetters] = useState({})
   const [currentWordStyle, setCurrentWordStyle] = useState('valid')
-  const [copyMessage, setCopyMessage] = useState('')
+  const [isCopied, setIsCopied] = useState(false)
   const [messaging, setMessaging] = useState('')
 
   const reload = () => {
@@ -46,7 +46,7 @@ const Game = (props) => {
     setIsLoser(false)
     setIsActive(true)
     setGuessedLetters({})
-    setCopyMessage('')
+    setIsCopied(false)
     setMessaging('')
   }
 
@@ -157,9 +157,9 @@ const Game = (props) => {
     </div>
     <div className="finished-buttons">
       {!isActive && <div className="reload" onClick={reload}>↻</div>}
-      {!isActive && <Share setCopyMessage={(message) => setCopyMessage(message)} isWinner={isWinner} guesses={guesses} colors={colors} target={target} />}
+      {!isActive && <Share setIsCopied={() => setIsCopied(true)} isWinner={isWinner} guesses={guesses} colors={colors} target={target} />}
     </div>
-    {copyMessage && <div>Copied to clipboard!</div>}
+    {isCopied && <div>Copied to clipboard!</div>}
     {isActive && <div>
       <KB letters={guessedLetters} onKeyPress={onKeyPress} />
     </div>}
