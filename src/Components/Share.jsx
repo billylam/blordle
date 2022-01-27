@@ -1,4 +1,5 @@
 import { Buffer } from 'buffer';
+import React from 'react';
 
 function Share({
   isWinner, setIsCopied, guesses, colors, target,
