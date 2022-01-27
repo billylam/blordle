@@ -34,6 +34,8 @@ const Game = (props) => {
   })
   const [guessedLetters, setGuessedLetters] = useState({})
   const [currentWordStyle, setCurrentWordStyle] = useState('valid')
+  const [isCopied, setIsCopied] = useState(false)
+  const [messaging, setMessaging] = useState('')
 
   const reload = () => {
     setTarget(getTarget())
@@ -44,12 +46,13 @@ const Game = (props) => {
     setIsLoser(false)
     setIsActive(true)
     setGuessedLetters({})
+    setIsCopied(false)
+    setMessaging('')
   }
 
   const handleSubmit = (props) => {
     if (currentGuess.length !== 5 || !dictionary.includes(currentGuess)) {
       setCurrentWordStyle('invalid')
-      console.log('here')
       setTimeout(() => {
         setCurrentWordStyle('valid')
       }, 500)
@@ -61,10 +64,14 @@ const Game = (props) => {
     if (currentGuess === target) {
       setIsWinner(true)
       setIsActive(false)
+      const praises = ["Nice job!", "Awe-inspiring!", "Excellent!", "Winner!", "Yeah boyeee!", "Welcome to Costco, I love you"];
+      setMessaging(praises[Math.floor(Math.random() * praises.length)])
     }
     else if (guesses.length === 5) {
       setIsLoser(true)
       setIsActive(false)
+      const slams = ["Bad job!  It was ", "Whoomp there it ISN'T: ", "Aww so close: ", "Better luck next time: "]
+      setMessaging(`${slams[Math.floor(Math.random() * slams.length)]} ${target}`)
     }
     setGuesses(guesses.slice().concat([currentGuess]))
     setCurrentGuess('')
@@ -98,12 +105,14 @@ const Game = (props) => {
       if (currentGuess[i] !== target[i]) {
         if (counts[currentGuess[i]] > 0) {
           colorCalc[i] = 'Y'
-          if (letters[currentGuess[i]] !== 'G') letters[currentGuess[i]] = 'Y'
+          if (letters[currentGuess[i]] !== 'G' && guessedLetters[currentGuess[i]] !== 'G') letters[currentGuess[i]] = 'Y'
           counts[currentGuess[i]] = counts[currentGuess[i]] - 1
         }
         else {
           colorCalc[i] = 'R'
-          if (letters[currentGuess[i]] !== 'G' && letters[currentGuess[i]] !== 'Y') letters[currentGuess[i]] = 'R'
+          if (letters[currentGuess[i]] !== 'G' && letters[currentGuess[i]] !== 'Y' 
+            && guessedLetters[currentGuess[i]] !== 'G'  && guessedLetters[currentGuess[i]] !== 'Y' )
+              letters[currentGuess[i]] = 'R'
         }
       }
     }
@@ -137,9 +146,6 @@ const Game = (props) => {
   if (isActive) numBlanks--
   const blanks = Array(numBlanks).fill(null).map(() => <div><Word word={Array(target.length).fill(' ').join('')} /></div>)
 
-  const praises = ["Nice job!", "Awe-inspiring!", "Excellent!", "Winner!", "Yeah boyeee!", "Welcome to Costco, I love you"];
-  const slams = ["Bad job!  It was ", "Whoomp there it ISN'T: ", "Aww so close: ", "Better luck next time: "]
-
   return (<div className="game">
     <div className="words">
       {words}
@@ -147,14 +153,13 @@ const Game = (props) => {
       {blanks}
     </div>
     <div className="messaging">
-      {isWinner && <div>{praises[Math.floor(Math.random() * praises.length)]}</div>}
-      {isLoser && <div>{slams[Math.floor(Math.random() * slams.length)]} {target}</div>}
-
+      {!isActive && <div>{messaging}</div>}
     </div>
     <div className="finished-buttons">
       {!isActive && <div className="reload" onClick={reload}>↻</div>}
-      {!isActive && <Share isWinner={isWinner} guesses={guesses} colors={colors} target={target} />}
+      {!isActive && <Share setIsCopied={() => setIsCopied(true)} isWinner={isWinner} guesses={guesses} colors={colors} target={target} />}
     </div>
+    {isCopied && <div>Copied to clipboard!</div>}
     {isActive && <div>
       <KB letters={guessedLetters} onKeyPress={onKeyPress} />
     </div>}

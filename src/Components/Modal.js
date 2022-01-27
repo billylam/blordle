@@ -6,17 +6,27 @@ import { Buffer } from 'buffer';
 const Modal = (props) => {
   const [value, setValue] = useState('');
   const [output, setOutput] = useState('');
+  const [isCopyable, setIsCopyable] = useState(false)
+  const [isCopied, setIsCopied] = useState(false)
   const handleChange = (e) => {
     setValue(e.target.value)
     setOutput('')
+    setIsCopyable(false);
+    setIsCopied(false);
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (Dictionary.includes(value.toUpperCase())) {
+      setIsCopyable(true)
       setOutput(`https://billylam.github.io/blordle/?q=${Buffer.from(value).toString('base64')}`)
     }
     else setOutput('Invalid input.')
+  }
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(output)
+    setIsCopied(true)
   }
 
   return (<div className="modal">
@@ -33,10 +43,11 @@ const Modal = (props) => {
         </form>
       </div>
       {output && <div className="output">
-        <div className="copy" onClick={() => {navigator.clipboard.writeText(output)}}
-> ✂ </div>
+        {isCopyable && <div className="copy" onClick={handleCopy}
+> ✂ </div>}
           <div> {output} </div>
         </div>}
+        {isCopied && <div>Copied to clipboard!</div>}
     </div>
   </div>)
 }

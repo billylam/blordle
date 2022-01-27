@@ -12,7 +12,7 @@ const KB = (props) => {
       // Standardize with 3rd party keyboard
       if (key === 'Enter') props.onKeyPress('{enter}')
       else if (key === 'Backspace') props.onKeyPress('{bksp}')
-      else if (/[A-Z]/.test(key.toUpperCase())) props.onKeyPress(key.toUpperCase())
+      else if (/^[A-Z]$/.test(key.toUpperCase())) props.onKeyPress(key.toUpperCase())
     }
 
     useEffect(() => {
