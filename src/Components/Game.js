@@ -1,130 +1,119 @@
-import React, { useState, useEffect } from 'react';
-import Word from './Word'
-import targets from '../Data/targets'
-import KB from './Keyboard'
-import dictionary from '../Data/dictionary';
-import "../Style/Game.css"
-import "../Style/Keyboard.css"
 import { Buffer } from 'buffer';
-import Share from './Share'
+import React, { useState } from 'react';
+import Word from './Word';
+import targets from '../Data/targets';
+import KB from './Keyboard';
+import dictionary from '../Data/dictionary';
+import '../Style/Game.css';
+import '../Style/Keyboard.css';
+import Share from './Share';
 
-const Game = (props) => {
+function Game(props) {
   const getTarget = () => {
-    let search = window.location.search;
-    let params = new URLSearchParams(search);
+    const { search } = window.location;
+    const params = new URLSearchParams(search);
     const q = params.get('q');
-    if (q && Buffer.from(params.get('q'), 'base64').toString('ascii') 
+    if (q && Buffer.from(params.get('q'), 'base64').toString('ascii')
           && guesses.length === 0 /* Prevents reusing query string when tapping reload button */) {
       const paramTarget = Buffer.from(params.get('q'), 'base64').toString('ascii');
-      if (paramTarget.length === 5 && dictionary.includes(paramTarget.toUpperCase()))
-        return Buffer.from(params.get('q'), 'base64').toString('ascii').toUpperCase();
+      if (paramTarget.length === 5 && dictionary.includes(paramTarget.toUpperCase())) return Buffer.from(params.get('q'), 'base64').toString('ascii').toUpperCase();
     }
-    
-    return targets[Math.floor(Math.random() * targets.length)]
-  }
 
-  console.log(navigator.userAgent)
+    return targets[Math.floor(Math.random() * targets.length)];
+  };
 
-  const [guesses, setGuesses] = useState([])
-  const [colors, setColors] = useState([])
-  const [currentGuess, setCurrentGuess] = useState('')
-  const [isWinner, setIsWinner] = useState(false)
-  const [isLoser, setIsLoser] = useState(false)
-  const [isActive, setIsActive] = useState(true)
-  const [target, setTarget] = useState(() => {
-    return getTarget();
-  })
-  const [guessedLetters, setGuessedLetters] = useState({})
-  const [currentWordStyle, setCurrentWordStyle] = useState('valid')
-  const [isCopied, setIsCopied] = useState(false)
-  const [messaging, setMessaging] = useState('')
+  const [guesses, setGuesses] = useState([]);
+  const [colors, setColors] = useState([]);
+  const [currentGuess, setCurrentGuess] = useState('');
+  const [isWinner, setIsWinner] = useState(false);
+  const [isLoser, setIsLoser] = useState(false);
+  const [isActive, setIsActive] = useState(true);
+  const [target, setTarget] = useState(() => getTarget());
+  const [guessedLetters, setGuessedLetters] = useState({});
+  const [currentWordStyle, setCurrentWordStyle] = useState('valid');
+  const [isCopied, setIsCopied] = useState(false);
+  const [messaging, setMessaging] = useState('');
 
   const reload = () => {
-    setTarget(getTarget())
-    setGuesses([])
-    setColors([])
-    setCurrentGuess('')
-    setIsWinner(false)
-    setIsLoser(false)
-    setIsActive(true)
-    setGuessedLetters({})
-    setIsCopied(false)
-    setMessaging('')
-  }
+    setTarget(getTarget());
+    setGuesses([]);
+    setColors([]);
+    setCurrentGuess('');
+    setIsWinner(false);
+    setIsLoser(false);
+    setIsActive(true);
+    setGuessedLetters({});
+    setIsCopied(false);
+    setMessaging('');
+  };
 
   const handleSubmit = (props) => {
     if (currentGuess.length !== 5 || !dictionary.includes(currentGuess)) {
-      setCurrentWordStyle('invalid')
+      setCurrentWordStyle('invalid');
       setTimeout(() => {
-        setCurrentWordStyle('valid')
-      }, 500)
+        setCurrentWordStyle('valid');
+      }, 500);
       return;
     }
 
-    colorize()
+    colorize();
 
     if (currentGuess === target) {
-      setIsWinner(true)
-      setIsActive(false)
-      const praises = ["Nice job!", "Awe-inspiring!", "Excellent!", "Winner!", "Yeah boyeee!", "Welcome to Costco, I love you"];
-      setMessaging(praises[Math.floor(Math.random() * praises.length)])
+      setIsWinner(true);
+      setIsActive(false);
+      const praises = ['Nice job!', 'Awe-inspiring!', 'Excellent!', 'Winner!', 'Yeah boyeee!', 'Welcome to Costco, I love you'];
+      setMessaging(praises[Math.floor(Math.random() * praises.length)]);
+    } else if (guesses.length === 5) {
+      setIsLoser(true);
+      setIsActive(false);
+      const slams = ['Bad job!  It was ', "Whoomp there it ISN'T: ", 'Aww so close: ', 'Better luck next time: '];
+      setMessaging(`${slams[Math.floor(Math.random() * slams.length)]} ${target}`);
     }
-    else if (guesses.length === 5) {
-      setIsLoser(true)
-      setIsActive(false)
-      const slams = ["Bad job!  It was ", "Whoomp there it ISN'T: ", "Aww so close: ", "Better luck next time: "]
-      setMessaging(`${slams[Math.floor(Math.random() * slams.length)]} ${target}`)
-    }
-    setGuesses(guesses.slice().concat([currentGuess]))
-    setCurrentGuess('')
-  }
-  
+    setGuesses(guesses.slice().concat([currentGuess]));
+    setCurrentGuess('');
+  };
+
   const colorize = () => {
-    // Rules: 
+    // Rules:
     //   First hash count of each letter in target
     const counts = {};
     for (let i = 0; i < target.length; i++) {
       if (counts[target[i]]) {
-        counts[target[i]] = counts[target[i]] + 1
-      }
-      else counts[target[i]] = 1
+        counts[target[i]] = counts[target[i]] + 1;
+      } else counts[target[i]] = 1;
     }
-    
+
     //   Iterate through each guess's letters twice
     //   Handle exact matches first and color green, decrement if found
-    const colorCalc = Array(target.length).fill('')
-    const letters = {}
+    const colorCalc = Array(target.length).fill('');
+    const letters = {};
     for (let i = 0; i < currentGuess.length; i++) {
       if (currentGuess[i] === target[i]) {
-        colorCalc[i] = 'G'
-        letters[currentGuess[i]] = 'G'
+        colorCalc[i] = 'G';
+        letters[currentGuess[i]] = 'G';
 
-        counts[currentGuess[i]] = counts[currentGuess[i]] - 1
+        counts[currentGuess[i]] = counts[currentGuess[i]] - 1;
       }
     }
     //   Handle rest
     for (let i = 0; i < currentGuess.length; i++) {
       if (currentGuess[i] !== target[i]) {
         if (counts[currentGuess[i]] > 0) {
-          colorCalc[i] = 'Y'
-          if (letters[currentGuess[i]] !== 'G' && guessedLetters[currentGuess[i]] !== 'G') letters[currentGuess[i]] = 'Y'
-          counts[currentGuess[i]] = counts[currentGuess[i]] - 1
-        }
-        else {
-          colorCalc[i] = 'R'
-          if (letters[currentGuess[i]] !== 'G' && letters[currentGuess[i]] !== 'Y' 
-            && guessedLetters[currentGuess[i]] !== 'G'  && guessedLetters[currentGuess[i]] !== 'Y' )
-              letters[currentGuess[i]] = 'R'
+          colorCalc[i] = 'Y';
+          if (letters[currentGuess[i]] !== 'G' && guessedLetters[currentGuess[i]] !== 'G') letters[currentGuess[i]] = 'Y';
+          counts[currentGuess[i]] = counts[currentGuess[i]] - 1;
+        } else {
+          colorCalc[i] = 'R';
+          if (letters[currentGuess[i]] !== 'G' && letters[currentGuess[i]] !== 'Y'
+            && guessedLetters[currentGuess[i]] !== 'G' && guessedLetters[currentGuess[i]] !== 'Y') letters[currentGuess[i]] = 'R';
         }
       }
     }
 
     //   Join string and pass to state
-    setColors(colors.slice().concat([colorCalc.join('')]))
-    setGuessedLetters(prevState => {
-      return {...prevState, ...letters}
-    })
-  }
+    setColors(colors.slice().concat([colorCalc.join('')]));
+    setGuessedLetters((prevState) => ({ ...prevState, ...letters }));
+  };
 
   const onKeyPress = (button) => {
     if (props.isDisplayingModal) {
@@ -132,41 +121,40 @@ const Game = (props) => {
     }
     if (button.toString() === '{enter}') {
       handleSubmit();
-      return;
-    }
-    else if (button === '{bksp}') {
-      if (currentGuess.length !== 0)
-        setCurrentGuess(currentGuess.slice(0, -1))
-      return;
-    } 
-    else if (currentGuess.length < 5) setCurrentGuess(currentGuess.concat(button))
-  }
+    } else if (button === '{bksp}') {
+      if (currentGuess.length !== 0) setCurrentGuess(currentGuess.slice(0, -1));
+    } else if (currentGuess.length < 5) setCurrentGuess(currentGuess.concat(button));
+  };
 
-  const words = guesses.map((guess, i) => <div><Word word={guess} colors={colors[i]} /></div>)
-  const currentWord = isActive && <div><Word wordStyle={currentWordStyle} length={target.length} word={currentGuess} /></div>
+  const words = guesses.map((guess, i) => <div><Word word={guess} colors={colors[i]} /></div>);
+  const currentWord = isActive && <div><Word wordStyle={currentWordStyle} length={target.length} word={currentGuess} /></div>;
   let numBlanks = 6 - guesses.length;
-  if (isActive) numBlanks--
-  const blanks = Array(numBlanks).fill(null).map(() => <div><Word word={Array(target.length).fill(' ').join('')} /></div>)
+  if (isActive) numBlanks--;
+  const blanks = Array(numBlanks).fill(null).map(() => <div><Word word={Array(target.length).fill(' ').join('')} /></div>);
 
-  return (<div className="game">
-    <div className="words">
-      {words}
-      {currentWord}
-      {blanks}
+  return (
+    <div className="game">
+      <div className="words">
+        {words}
+        {currentWord}
+        {blanks}
+      </div>
+      <div className="messaging">
+        {!isActive && <div>{messaging}</div>}
+      </div>
+      <div className="finished-buttons">
+        {!isActive && <div className="reload" onClick={reload}>↻</div>}
+        {(!props.isAndroidWebview && !isActive) && <Share setIsCopied={() => setIsCopied(true)} isWinner={isWinner} guesses={guesses} colors={colors} target={target} />}
+      </div>
+      {isCopied && <div>Copied to clipboard!</div>}
+      {(props.isAndroidWebview && !isActive) && <div>Use a different browser to enable sharing and puzzle creation!</div>}
+      {isActive && (
+      <div>
+        <KB letters={guessedLetters} onKeyPress={onKeyPress} />
+      </div>
+      )}
     </div>
-    <div className="messaging">
-      {!isActive && <div>{messaging}</div>}
-    </div>
-    <div className="finished-buttons">
-      {!isActive && <div className="reload" onClick={reload}>↻</div>}
-      {(!props.isAndroidWebview && !isActive) && <Share setIsCopied={() => setIsCopied(true)} isWinner={isWinner} guesses={guesses} colors={colors} target={target} />}
-    </div>
-    {isCopied && <div>Copied to clipboard!</div>}
-    {(props.isAndroidWebview && !isActive) && <div>Use a different browser to enable sharing and puzzle creation!</div>}
-    {isActive && <div>
-      <KB letters={guessedLetters} onKeyPress={onKeyPress} />
-    </div>}
-  </div>)
+  );
 }
 
 export default Game;
