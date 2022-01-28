@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../Style/Modal.css';
-import { Buffer } from 'buffer';
+import randomizedDict from '../Data/randomizedDict';
 import Dictionary from '../Data/dictionary';
 
 function Modal({ handleModalClose }) {
@@ -19,7 +19,7 @@ function Modal({ handleModalClose }) {
     e.preventDefault();
     if (Dictionary.includes(value.toUpperCase())) {
       setIsCopyable(true);
-      setOutput(`https://billylam.github.io/blordle/?q=${Buffer.from(value).toString('base64')}`);
+      setOutput(`https://billylam.github.io/blordle/?game=${randomizedDict.findIndex((word) => word === value.toUpperCase()) + 1}`);
     } else setOutput('Invalid input.');
   };
 

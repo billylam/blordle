@@ -1,5 +1,5 @@
-import { Buffer } from 'buffer';
 import React from 'react';
+import randomizedDict from '../Data/randomizedDict';
 
 function Share({
   isWinner, setIsCopied, guesses, colors, target,
@@ -19,7 +19,7 @@ function Share({
       }).join('');
       return letters;
     }).join('\n'));
-    text = text.concat(`\nPlay this Blordle at\n${`https://billylam.github.io/blordle/?q=${Buffer.from(target).toString('base64')}`}`);
+    text = text.concat(`\nPlay this Blordle at\n${`https://billylam.github.io/blordle/?game=${randomizedDict.findIndex((word) => word === target) + 1}`}`);
     navigator.clipboard.writeText(text);
     setIsCopied();
   };

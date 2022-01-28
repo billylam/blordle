@@ -1,9 +1,9 @@
-import { Buffer } from 'buffer';
 import React, { useState } from 'react';
 import Word from './Word';
 import targets from '../Data/targets';
 import KB from './Keyboard';
 import dictionary from '../Data/dictionary';
+import randomizedDict from '../Data/randomizedDict';
 import '../Style/Game.css';
 import '../Style/Keyboard.css';
 import Share from './Share';
@@ -22,11 +22,10 @@ function Game({ isDisplayingModal, isAndroidWebview }) {
   const getTarget = () => {
     const { search } = window.location;
     const params = new URLSearchParams(search);
-    const q = params.get('q');
-    if (q && Buffer.from(params.get('q'), 'base64').toString('ascii')
-          && guesses.length === 0 /* Prevents reusing query string when tapping reload button */) {
-      const paramTarget = Buffer.from(params.get('q'), 'base64').toString('ascii');
-      if (paramTarget.length === 5 && dictionary.includes(paramTarget.toUpperCase())) return Buffer.from(params.get('q'), 'base64').toString('ascii').toUpperCase();
+    const qs = params.get('game');
+    if (qs && guesses.length === 0 /* Prevents reusing query string when tapping reload button */) {
+      const i = Number.parseInt(qs, 10);
+      if (i >= 1 && i <= randomizedDict.length) return randomizedDict[i - 1];
     }
 
     return targets[Math.floor(Math.random() * targets.length)];
