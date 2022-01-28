@@ -4,9 +4,6 @@
 
 .game {
   background-color: #282c34;
-  /* display: flex; */
-  /* align-items: flex-start + 2vh; */
-  /* justify-content: center; */
   font-size: calc(10px + 2vmin);
   color: white;
 
@@ -41,9 +38,6 @@
 
 .messaging {
   display: block;
-}
-
-.reload {
 }
 
 .finished-buttons {

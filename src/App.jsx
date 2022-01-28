@@ -14,7 +14,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {isAndroidWebview ? <div /> : <div onClick={() => setIsDisplayingStats(true)}>📊</div>}
+        {isAndroidWebview ? <div /> : <div onClick={() => setIsDisplayingStats(true)} className="stats">📊</div>}
         <div className="title">BLORDLE!</div>
         {isAndroidWebview ? <div /> : <div onClick={() => setIsDisplayingModal(true)} className="create">📝</div>}
       </header>
