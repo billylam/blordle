@@ -19,11 +19,7 @@
 }
 
 .left {
-  visibility: hidden;
-  font-weight: bold;
-  color: green;
   padding-left: 3vh;
-  /* justify-content: space-between; */
 }
 
 .title {

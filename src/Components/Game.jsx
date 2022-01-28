@@ -19,6 +19,24 @@ function Game({ isDisplayingModal, isAndroidWebview }) {
   const [isCopied, setIsCopied] = useState(false);
   const [messaging, setMessaging] = useState('');
 
+  // Initialize stats
+  if (!localStorage.getItem('wins')) localStorage.setItem('wins', '0');
+  if (!localStorage.getItem('streak')) localStorage.setItem('streak', '0');
+  if (!localStorage.getItem('maxStreak')) localStorage.setItem('maxStreak', '0');
+  if (!localStorage.getItem('gamesPlayed')) localStorage.setItem('gamesPlayed', '0');
+  if (!localStorage.getItem('1')) localStorage.setItem('1', '0');
+  if (!localStorage.getItem('2')) localStorage.setItem('2', '0');
+  if (!localStorage.getItem('3')) localStorage.setItem('3', '0');
+  if (!localStorage.getItem('4')) localStorage.setItem('4', '0');
+  if (!localStorage.getItem('5')) localStorage.setItem('5', '0');
+  if (!localStorage.getItem('6')) localStorage.setItem('6', '0');
+  if (!localStorage.getItem('losses')) localStorage.setItem('losses', '0');
+
+  const incrementLocalStorage = (key) => {
+    const count = Number.parseInt(localStorage.getItem(key), 10);
+    localStorage.setItem(key, (count + 1).toString());
+  };
+
   const getTarget = () => {
     const { search } = window.location;
     const params = new URLSearchParams(search);
@@ -101,10 +119,24 @@ function Game({ isDisplayingModal, isAndroidWebview }) {
     if (currentGuess === target) {
       setIsWinner(true);
       setIsActive(false);
-      const praises = ['Nice job!', 'Awe-inspiring!', 'Excellent!', 'Winner!', 'Yeah boyeee!', 'Welcome to Costco, I love you'];
+
+      incrementLocalStorage('streak');
+      incrementLocalStorage('gamesPlayed');
+      incrementLocalStorage('wins');
+
+      if (Number.parseInt(localStorage.getItem('streak'), 10) > Number.parseInt(localStorage.getItem('maxStreak'), 10)) localStorage.setItem('maxStreak', localStorage.getItem('streak'));
+      incrementLocalStorage(guesses.length.toString());
+
+      const praises = ['Nice job!', 'Awe-inspiring!', 'Excellent!', 'Winner!', 'Yeah boyeee!', '🤯',
+        'Breathtaking!', 'Boom shaka-laka!', 'Is that Bill Shakespeare over there!?', 'Welcome to Costco, I love you'];
       setMessaging(praises[Math.floor(Math.random() * praises.length)]);
     } else if (guesses.length === 5) {
       setIsActive(false);
+
+      localStorage.setItem('streak', '0');
+      incrementLocalStorage('gamesPlayed');
+      incrementLocalStorage('losses');
+
       const slams = ['Bad job!  It was ', "Whoomp there it ISN'T: ", 'Aww so close: ', 'Better luck next time: '];
       setMessaging(`${slams[Math.floor(Math.random() * slams.length)]} ${target}`);
     }

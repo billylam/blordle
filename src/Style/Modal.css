@@ -48,3 +48,12 @@
 .copy {
   margin-right: 5px;
 }
+
+.mainStats {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.winStats {
+  padding: 1vh;
+}
