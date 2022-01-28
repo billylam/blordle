@@ -125,7 +125,7 @@ function Game({ isDisplayingModal, isAndroidWebview }) {
       incrementLocalStorage('wins');
 
       if (Number.parseInt(localStorage.getItem('streak'), 10) > Number.parseInt(localStorage.getItem('maxStreak'), 10)) localStorage.setItem('maxStreak', localStorage.getItem('streak'));
-      incrementLocalStorage(guesses.length.toString());
+      incrementLocalStorage((guesses.length + 1).toString());
 
       const praises = ['Nice job!', 'Awe-inspiring!', 'Excellent!', 'Winner!', 'Yeah boyeee!', '🤯',
         'Breathtaking!', 'Boom shaka-laka!', 'Is that Bill Shakespeare over there!?', 'Welcome to Costco, I love you'];
