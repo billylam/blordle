@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import {
+  useLocation, Route, Navigate, Routes,
+} from 'react-router-dom';
 import Word from './Word';
 import targets from '../Data/targets';
 import KB from './Keyboard';
@@ -37,12 +40,16 @@ function Game({ isDisplayingModal, isAndroidWebview }) {
     localStorage.setItem(key, (count + 1).toString());
   };
 
+  const useQuery = () => {
+    const { search } = useLocation();
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+  };
+
+  const query = useQuery();
+
   const getTarget = () => {
-    const { search } = window.location;
-    const params = new URLSearchParams(search);
-    const qs = params.get('game');
-    if (qs && guesses.length === 0 /* Prevents reusing query string when tapping reload button */) {
-      const i = Number.parseInt(qs, 10);
+    if (query.get('game')) {
+      const i = Number.parseInt(query.get('game'), 10);
       if (i >= 1 && i <= randomizedDict.length) return randomizedDict[i - 1];
     }
 
@@ -143,6 +150,7 @@ function Game({ isDisplayingModal, isAndroidWebview }) {
     setGuesses(guesses.slice().concat([currentGuess]));
     setCurrentGuess('');
   };
+
   const onKeyPress = (button) => {
     if (isDisplayingModal) {
       return;
@@ -161,19 +169,20 @@ function Game({ isDisplayingModal, isAndroidWebview }) {
   if (isActive) numBlanks -= 1;
   const blanks = Array(numBlanks).fill(null).map(() => <div><Word word={Array(target.length).fill(' ').join('')} /></div>);
 
-  return (
-    <div className="game">
-      <div className="words">
-        {words}
-        {currentWord}
-        {blanks}
-      </div>
-      <div className="messaging">
-        {!isActive && <div>{messaging}</div>}
-      </div>
-      <div className="finished-buttons">
-        {!isActive && <div className="reload" onClick={reload}>↻</div>}
-        {(!isAndroidWebview && !isActive)
+  return query.get('game') ? (
+    <Routes><Route path="*" element={<Navigate to="/blordle" state={{ target: getTarget() }} />} /></Routes>) : (
+      <div className="game">
+        <div className="words">
+          {words}
+          {currentWord}
+          {blanks}
+        </div>
+        <div className="messaging">
+          {!isActive && <div>{messaging}</div>}
+        </div>
+        <div className="finished-buttons">
+          {!isActive && <div className="reload" onClick={reload}>↻</div>}
+          {(!isAndroidWebview && !isActive)
           && (
           <Share
             setIsCopied={() => setIsCopied(true)}
@@ -183,16 +192,16 @@ function Game({ isDisplayingModal, isAndroidWebview }) {
             target={target}
           />
           )}
-      </div>
-      {isCopied && <div>Copied to clipboard!</div>}
-      {(isAndroidWebview && !isActive)
+        </div>
+        {isCopied && <div>Copied to clipboard!</div>}
+        {(isAndroidWebview && !isActive)
         && <div>Use a different browser to enable sharing and puzzle creation!</div>}
-      {isActive && (
-      <div>
-        <KB letters={guessedLetters} onKeyPress={onKeyPress} />
+        {isActive && (
+        <div>
+          <KB letters={guessedLetters} onKeyPress={onKeyPress} />
+        </div>
+        )}
       </div>
-      )}
-    </div>
   );
 }
 
